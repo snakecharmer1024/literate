@@ -5,8 +5,8 @@ init();
 animate();
 
 function init() {
-
-    camera = new THREE.PerspectiveCamera(1500, window.innerWidth / window.innerHeight, 1, 10000);
+    camera = new THREE.OrthographicCamera( -2000, 2000, 2000, -2000, 0, 100000 );
+//    camera = new THREE.PerspectiveCamera(1500, window.innerWidth / window.innerHeight, 0.1, 1000000);
     camera.position.z = 2000;
 
     scene = new THREE.Scene();
@@ -55,3 +55,33 @@ function animate() {
 
 }
 
+document.onkeydown = function(e) {
+    speed = 0.01;
+    switch (e.keyCode) {
+        case 37:
+            camera.position.z -= 100*speed;
+            for (i = 0; i < num_geos; i++)
+            {
+       //          meshes[i].rotation.x -= speed;
+            }
+            break;
+        case 38:
+            for (i = 0; i < num_geos; i++)
+            {
+                 meshes[i].rotation.y += speed;
+            }
+            break;
+        case 39:
+            for (i = 0; i < num_geos; i++)
+            {
+                 meshes[i].rotation.x += speed;
+            }
+            break;
+        case 40:
+            for (i = 0; i < num_geos; i++)
+            {
+                 meshes[i].rotation.y -= speed;
+            }
+            break;
+    }
+};

@@ -5,7 +5,7 @@ init();
 animate();
 
 function init() {
-
+    //camera = new THREE.OrthographicCamera( -2000, 2000, 2000, -2000, 100000);
     camera = new THREE.PerspectiveCamera(1000, window.innerWidth / window.innerHeight, 1, 10000);
     camera.position.z = 1000;
 
@@ -15,7 +15,7 @@ function init() {
     light.position.set( 200,  500,  500 );
     scene.add( light );
     geometries = [];
-    radius = 300;
+    radius = 100;
     num_geos = 10;
     rotation_speed = 0.002;
     for (i = 0; i < num_geos; i++)

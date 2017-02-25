@@ -5,9 +5,9 @@ init();
 animate();
 
 function init() {
-
-    camera = new THREE.PerspectiveCamera(1000, window.innerWidth / window.innerHeight, 1, 10000);
-    camera.position.z = 1000;
+    camera = new THREE.OrthographicCamera( -2000, 2000, 2000, -2000, 100000);
+//    camera = new THREE.PerspectiveCamera(1000, window.innerWidth / window.innerHeight, 1, 10000);
+    camera.position.z = 10000;
 
     scene = new THREE.Scene();
 
@@ -15,7 +15,7 @@ function init() {
     light.position.set( 200,  500,  500 );
     scene.add( light );
     geometries = [];
-    radius = 100;
+    radius = 200;
     num_geos = 10;
     for (i = 0; i < num_geos; i++)
     {
@@ -52,7 +52,7 @@ function animate() {
 
     for (i = 0; i < num_geos; i++)
     {
-       meshes[i].rotation.x += 0.002;
+       meshes[i].rotation.x += 0.003;
        meshes[i].rotation.y += 0.002;
     }
     renderer.render(scene, camera);
