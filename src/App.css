@@ -1,0 +1,47 @@
+.App {
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 200px;
+}
+
+.App-header {
+  background-color: #0;
+  height: 250px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+  color: black;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+.essays {
+  text-align: left;
+  font-family: 'Roboto', sans-serif;
+  padding: 10%;
+}
+
+.haiku-3 {
+   -webkit-column-count: 3; /* Chrome, Safari, Opera */
+   -moz-column-count: 3; /* Firefox */
+   column-count: 3;
+}
+
+.haiku-5 {
+   -webkit-column-count: 5; /* Chrome, Safari, Opera */
+   -moz-column-count: 5; /* Firefox */
+   column-count: 5;
+}
