@@ -19,6 +19,7 @@ import Things from './poems/Things.js'
 import Desert from './poems/Desert.js'
 import Secret from './poems/Secret.js'
 import Liquid from './poems/Liquid.js'
+import School from './poems/School.js'
 import Hacking from './essays/Hacking.js'
 import SayNo from './essays/SayNo.js'
 
@@ -77,7 +78,7 @@ class PoemMenu extends Component {
     this.state = {value: 0};
   }
 
-  components = [[], <Myth />, <TwoBodies />, <Victory />, <Muse />, <Memory />, <MetaHaiku />, <Liberation />, <Things />, <Desert />, <Secret />, <Liquid />]
+  components = [[], <Myth />, <TwoBodies />, <Victory />, <Muse />, <Memory />, <MetaHaiku />, <Liberation />, <Things />, <Desert />, <Secret />, <Liquid />, <School />]
 
   handleChange = (event, index, value) => {
     var state = {
@@ -107,6 +108,7 @@ class PoemMenu extends Component {
           <MenuItem value={9} primaryText="Desert" />
           <MenuItem value={10} primaryText="Secretly the Same Person" />
           <MenuItem value={11} primaryText="Liquid Mirror" />
+          <MenuItem value={12} primaryText="School" />
         </DropDownMenu>
         </MuiThemeProvider>
         { this.state.children }
