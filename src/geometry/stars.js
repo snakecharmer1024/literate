@@ -117,6 +117,10 @@ export default class Stars extends Component {
       }, this.state.delay);
     }
 
+    toggleAnimation() {
+      this.state.buttonTextIndex === 0 ? clearTimeout(this.animation) : this.animation = this.animate();
+    }
+
     drawVertices(numVertices) {
 
       if (this.svg) this.svg.remove();
@@ -197,8 +201,8 @@ export default class Stars extends Component {
                 marginLeft={10}
                 appearance="primary"
                 onClick={() => {
-                  this.state.buttonTextIndex === 0 ? clearTimeout(this.animation) : this.animation = this.animate();
                   this.setState((state, props) => ({'buttonTextIndex': (state.buttonTextIndex + 1) % 2 }))
+                  this.toggleAnimation();
                 }}
               >
                 {this.state.buttonTexts[this.state.buttonTextIndex]}
@@ -214,9 +218,7 @@ export default class Stars extends Component {
                         min={3}
                         max={256}
                         onChange={(value) => {
-                          clearTimeout(this.animation);
                           this.drawVertices(value);
-                          this.animation = this.animate();
                         }}
                     />
                     Delay
@@ -226,9 +228,7 @@ export default class Stars extends Component {
                         min={1}
                         max={4000}
                         onChange={(value) => {
-                          clearTimeout(this.animation);
                           this.setState({'delay': value})
-                          this.animation = this.animate();
                         }}
                     />
                     Radius
@@ -238,10 +238,8 @@ export default class Stars extends Component {
                         min={64}
                         max={300}
                         onChange={(value) => {
-                          clearTimeout(this.animation);
                           this.setState({'radius': value});
                           this.drawVertices(this.state.numVertices);
-                          this.animation = this.animate();
                         }}
                     />
 
