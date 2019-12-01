@@ -147,9 +147,7 @@ export default class PValues extends Component {
                     <div id="slider-desc">Neural Threshold</div>
                 </div>
             </div>
-
-
-    )
+        )
     }
 
 }

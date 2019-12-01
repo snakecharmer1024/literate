@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "d3": "^5.9.2",
+    "evergreen-ui": "^4.21.5",
     "jquery": "^3.4.1",
     "rc-slider": "^8.6.13",
     "react": "^16.0.0",

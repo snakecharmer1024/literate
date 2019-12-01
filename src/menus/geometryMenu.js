@@ -3,7 +3,8 @@ import { Route } from 'react-router';
 import Tetrahedron from '../geometry/tetrahedron.js'
 import IcosahedronDodecahedron from '../geometry/icosahedron-dodecahedron.js'
 import OctahedronCube from '../geometry/octahedron-cube.js'
-import PValues from '../geometry/pvalues.js'
+import PValues from '../geometry/pvalues.js';
+import Stars from '../geometry/stars.js';
 import { DropdownMenu, MenuItem } from 'react-bootstrap-dropdown-menu';
 
 
@@ -21,7 +22,8 @@ export default class GeometryMenu extends Component {
       <Tetrahedron />,
       <OctahedronCube />,
       <IcosahedronDodecahedron />,
-      <PValues />
+      <PValues />,
+      <Stars />
   ];
 
   handleChange = (event, index, value) => {
@@ -45,11 +47,13 @@ export default class GeometryMenu extends Component {
           <MenuItem text="Octahedron-Cube Fractal" location="/geometry/octahedron-cube-fractal" />
           <MenuItem text="Icosahedron-Dodecahedron Fractal" location="/geometry/icosahedron-dodecahedron-fractal" />
           <MenuItem text="P-Values" location="/geometry/p-values" />
+          <MenuItem text="Stars" location="/geometry/stars" />
         </DropdownMenu>
         <Route component={Tetrahedron} path={"/geometry/tetrahedron-fractal"} />
         <Route component={OctahedronCube} path={"/geometry/octahedron-cube-fractal"} />
         <Route component={IcosahedronDodecahedron} path={"/geometry/icosahedron-dodecahedron-fractal"} />
         <Route component={PValues} path={"/geometry/p-values"} />
+        <Route component={Stars} path={"/geometry/stars"} />
 
         <div id='geometry'>
           { this.state.children }
