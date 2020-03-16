@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import {Pane, Text, Button, majorScale, Table} from 'evergreen-ui'
 import Slider from "rc-slider";
 import {select} from 'd3';
+import {goldenRatioColor, crystalSpiralColor} from '../colors';
 
 function drawEdges(self) {
   let numColors = gcd(self.state.stepSize, self.state.numVertices);
   let colors = [];
   for (let i = 0; i < numColors; i ++) {
-    colors.push(goldenRatioColor());
+    colors.push(crystalSpiralColor());
   }
 
   self.svg.selectAll('.link').remove();
@@ -17,7 +18,8 @@ function drawEdges(self) {
     edges.push({
       source: i,
       target: (i + self.state.stepSize) % self.state.numVertices,
-      color: colors[i % numColors]
+      color: colors[i % numColors],
+      zIndex: -i
     });
   }
   self.edges = edges;
@@ -30,6 +32,7 @@ function drawEdges(self) {
     .attr('y1', function(d) { return self.nodes[d.source].y; })
     .attr('x2', function(d) { return self.nodes[d.target].x; })
     .attr('y2', function(d) { return self.nodes[d.target].y; })
+    .attr('z', d => d.z);
   self.setState({'numColors': numColors});
 }
 
@@ -53,44 +56,12 @@ function changeColor(self) {
     .style('stroke', newcolor)
 }
 
-function hsv_to_rgb(h, s, v) {
-  const h_i = Math.floor(h * 6);
-  const f = h * 6 - h_i;
-  const p = v * (1 - s);
-  const q = v * (1 - f * s);
-  const t = v * (1 - (1 - f) * s);
-  let r,g,b;
-  if (h_i === 0)
-    [r, g, b] = [v, t, p];
-  if (h_i === 1)
-    [r, g, b] = [q, v, p];
-  if (h_i === 2)
-    [r, g, b] = [p, v, t];
-  if (h_i === 3)
-    [r, g, b] = [p, q, v];
-  if (h_i === 4)
-    [r, g, b] = [t, p, v];
-  if (h_i === 5)
-    [r, g, b] = [v, p, q];
-  return [Math.floor(r * 256), Math.floor(g * 256), Math.floor(b * 256)]
-}
-
-function rgbToHex(rgb) {
-  return '#' + rgb.map(x => x.toString(16).padStart(2, '0')).reduce((a,b) => a + b);
-}
-
-const golden_ratio_conjugate = 0.618033988749895;
-
-function goldenRatioColor() {
-  const h = (Math.random() + golden_ratio_conjugate) % 1;
-  return rgbToHex(hsv_to_rgb(h, 0.5, 0.95));
-}
-
 export default class Stars extends Component {
     constructor(props) {
       super(props);
       this.state = {
         value: 0,
+        animating: false,
         numColors: 0,
         numVertices: 120,
         stepSize: 1,
@@ -106,7 +77,6 @@ export default class Stars extends Component {
       this.drawVertices(this.state.numVertices);
       drawEdges(this);
       this.animation = this.animate()
-      // setInterval(() => changeColor(that), 1000);
     }
 
     animate() {
@@ -118,7 +88,12 @@ export default class Stars extends Component {
     }
 
     toggleAnimation() {
-      this.state.buttonTextIndex === 0 ? clearTimeout(this.animation) : this.animation = this.animate();
+      if (this.animation) {
+        clearTimeout(this.animation);
+        this.animation = null;
+      } else {
+        this.animation = this.animate();
+      }
     }
 
     drawVertices(numVertices) {
@@ -161,91 +136,86 @@ export default class Stars extends Component {
 
     render () {
       return (
-
-          <Pane
-            height={1080}
-            width={'90%'}
-            padding={"20px"}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            // border="default"
-          >
-            <Table>
-              <Table.Body height={480} width={240}>
-                <Table.Row key={'polygons'} isSelectable={false}>
-                    <Table.TextCell>Polygons</Table.TextCell>
-                    <Table.TextCell>{this.state.numColors}</Table.TextCell>
-                </Table.Row>
-                <Table.Row key={'shapes'} isSelectable={false}>
-                    <Table.TextCell>Shapes</Table.TextCell>
-                    <Table.TextCell>{this.state.numVertices / this.state.numColors}-gon</Table.TextCell>
-                </Table.Row>
-                <Table.Row key={'vertices'} isSelectable={false}>
-                    <Table.TextCell>Vertices</Table.TextCell>
-                    <Table.TextCell>{this.state.numVertices}</Table.TextCell>
-                </Table.Row>
-                <Table.Row key={'stepSize'} isSelectable={false}>
-                    <Table.TextCell>Step Size</Table.TextCell>
-                    <Table.TextCell>{this.state.stepSize}</Table.TextCell>
-                </Table.Row>
-                <Table.Row key={'delay'} isSelectable={false}>
-                    <Table.TextCell>Delay</Table.TextCell>
-                    <Table.TextCell>{this.state.delay} ms</Table.TextCell>
-                </Table.Row>
-
-              </Table.Body>
-            </Table>
-              <Button
-                width={64}
-                marginLeft={10}
-                appearance="primary"
-                onClick={() => {
-                  this.setState((state, props) => ({'buttonTextIndex': (state.buttonTextIndex + 1) % 2 }))
-                  this.toggleAnimation();
-                }}
-              >
-                {this.state.buttonTexts[this.state.buttonTextIndex]}
-              </Button>
+        <div>
               <Pane>
                 <div id="graph_container">
                     <div id="graph"></div>
-                    <br/>
-                    Vertices
-                    <Slider
-                        className={"range"}
-                        defaultValue={this.state.numVertices}
-                        min={3}
-                        max={256}
-                        onChange={(value) => {
-                          this.drawVertices(value);
-                        }}
-                    />
-                    Delay
-                    <Slider
-                        className={"range"}
-                        defaultValue={this.state.delay}
-                        min={1}
-                        max={4000}
-                        onChange={(value) => {
-                          this.setState({'delay': value})
-                        }}
-                    />
-                    Radius
-                    <Slider
-                        className={"range"}
-                        defaultValue={this.state.radius}
-                        min={64}
-                        max={300}
-                        onChange={(value) => {
-                          this.setState({'radius': value});
-                          this.drawVertices(this.state.numVertices);
-                        }}
-                    />
-
-                </div>
+                    <Button
+                      width={64}
+                      margin={20}
+                      appearance="primary"
+                      onClick={() => {
+                        this.setState((state, props) => ({'buttonTextIndex': (state.buttonTextIndex + 1) % 2 }))
+                        this.toggleAnimation();
+                      }}
+                    >
+                      {this.state.buttonTexts[this.state.buttonTextIndex]}
+                    </Button>
+                    <div className="table-slider">
+                      <Table>
+                        <Table.Body width={'20%'} float={'left'} display={'block'} marginBottom={40}>
+                          <Table.Row key={'polygons'} isSelectable={false}>
+                              <Table.TextCell>Stars</Table.TextCell>
+                              <Table.TextCell>{this.state.numColors}</Table.TextCell>
+                          </Table.Row>
+                          <Table.Row key={'shapes'} isSelectable={false}>
+                              <Table.TextCell>Sides</Table.TextCell>
+                              <Table.TextCell>{this.state.numVertices / this.state.numColors}-gon</Table.TextCell>
+                          </Table.Row>
+                          <Table.Row key={'vertices'} isSelectable={false}>
+                              <Table.TextCell>Vertices</Table.TextCell>
+                              <Table.TextCell>{this.state.numVertices}</Table.TextCell>
+                          </Table.Row>
+                          <Table.Row key={'stepSize'} isSelectable={false}>
+                              <Table.TextCell>Steps</Table.TextCell>
+                              <Table.TextCell>{this.state.stepSize}</Table.TextCell>
+                          </Table.Row>
+                          <Table.Row key={'delay'} isSelectable={false}>
+                              <Table.TextCell>Delay</Table.TextCell>
+                              <Table.TextCell>{this.state.delay} ms</Table.TextCell>
+                          </Table.Row>
+                        </Table.Body>
+                      </Table>
+                      </div>
+                      <div className="slider-div">
+                      Vertices
+                      <Slider
+                          className={"range"}
+                          defaultValue={this.state.numVertices}
+                          min={3}
+                          max={256}
+                          onChange={(value) => {
+                            this.drawVertices(value);
+                          }}
+                      /></div>
+                      <div className="slider-div">
+                      Delay
+                      <Slider
+                          className={"range"}
+                          defaultValue={this.state.delay}
+                          min={1}
+                          max={4000}
+                          onChange={(value) => {
+                            this.setState({'delay': value})
+                            this.toggleAnimation()
+                            this.toggleAnimation()
+                          }}
+                      /></div>
+                      <div className="slider-div">
+                      Radius
+                      <Slider
+                          className={"range"}
+                          defaultValue={this.state.radius}
+                          min={64}
+                          max={300}
+                          onChange={(value) => {
+                            this.setState({'radius': value});
+                            this.drawVertices(this.state.numVertices);
+                          }}
+                      /></div>
+                  </div>
               </Pane>
-          </Pane>
+              </div>
       )
     }
 
