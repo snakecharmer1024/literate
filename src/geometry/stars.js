@@ -59,24 +59,28 @@ function changeColor(self) {
 export default class Stars extends Component {
     constructor(props) {
       super(props);
+      console.log('params', props.match.params);
+      const params = props.match.params;
       this.state = {
         value: 0,
         animating: false,
         numColors: 0,
-        numVertices: 120,
-        stepSize: 1,
+        numVertices: params.vertices ? params.vertices : 120,
+        stepSize: params.stepSize ? params.stepSize : 1,
         radius: 200,
         children: [],
         buttonTexts: ['Pause', 'Start'],
-        buttonTextIndex: 0,
+        buttonTextIndex: 1,
         delay: 500
       };
+      console.log('state', this.state)
     }
+
 
     componentDidMount() {
       this.drawVertices(this.state.numVertices);
       drawEdges(this);
-      this.animation = this.animate()
+//      this.animation = this.animate()
     }
 
     animate() {

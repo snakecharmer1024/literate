@@ -3,6 +3,7 @@ import Hacking from '../essays/Hacking.js'
 import SayNo from '../essays/SayNo.js'
 import {Route} from 'react-router-dom'
 import { DropdownMenu, MenuItem } from 'react-bootstrap-dropdown-menu';
+import { SelectField, TextInput, Autocomplete } from 'evergreen-ui';
 
 export default class EssayMenu extends Component {
   constructor(props) {
@@ -26,16 +27,29 @@ export default class EssayMenu extends Component {
         <p className="App-intro">
             Essays <br/>
         </p>
-        <DropdownMenu triggerType="text" trigger={"What would you like to read?"}>
-          <MenuItem text="Hacking Education" location="/essays/hacking-education" />
-          <MenuItem text="Saying No" location="/essays/saying-no" />
-        </DropdownMenu>
+        <Autocomplete
+          title="Essays"
+          onChange={changedItem => this.props.history.push('/essays/' + changedItem.replace(/\s/g, "-"))}
+          items={['Hacking Education', 'Saying No']}
+        >
+          {(props) => {
+            const { getInputProps, getRef, inputValue, openMenu } = props
+            return (
+              <TextInput
+                placeholder="essays"
+                value={inputValue}
+                innerRef={getRef}
+                {...getInputProps({
+                  onFocus: () => {
+                    openMenu()
+                  }
+                })}
+              />
+            )
+          }}
+        </Autocomplete>
         <Route component={Hacking} path={'/essays/hacking-education'} />
         <Route component={SayNo} path={'/essays/saying-no'} />
-        <br/>
-        <div className="essays">
-        { this.state.children }
-        </div>
       </div>
 
     )

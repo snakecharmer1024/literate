@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import logo from './assets/yinyang.png';
 import './css/App.css';
-import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {Link, BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import GeometryMenu from './menus/geometryMenu.js'
 import MusicMenu from './menus/musicMenu.js'
 import EssayMenu from './menus/essayMenu.js'
 import PoemMenu from './menus/poemMenu.js'
-import { DropdownMenu, MenuItem } from 'react-bootstrap-dropdown-menu';
+import { SelectField, TabNavigation, Tab } from 'evergreen-ui';
 
 class App extends Component {
   constructor(props) {
@@ -18,9 +18,8 @@ class App extends Component {
   }
   components = [[], <EssayMenu />, <PoemMenu />, <GeometryMenu />, <MusicMenu />];
 
-  handleChange = (event, index, value) => {
-    var state = { value: value, children: this.components[index] };
-    this.setState(state);
+  handleChange = (event) => {
+    console.log(this.state)
   };
 
   render() {
@@ -33,12 +32,13 @@ class App extends Component {
                     <header className="App-header">
                         <img src={logo} className="App-logo" alt="logo" />
                     </header>
-                    <DropdownMenu triggerType="text" trigger={"Browse"}>
-                      <MenuItem text="Essays" location="/essays" />
-                      <MenuItem text="Poetry" location="/poetry" />
-                      <MenuItem text="Geometry" location="/geometry" />
-                      <MenuItem text="Music" location="/music" />
-                    </DropdownMenu>
+                    <TabNavigation>
+                      {['Essays', 'Poetry', 'Geometry', 'Music'].map((tab, index) => (
+                        <Tab key={tab} is="a" href="#" id={tab} href={'/' + tab}>
+                          {tab}
+                        </Tab>
+                      ))}
+                    </TabNavigation>
                   <Switch>
                     <Route component={EssayMenu} path={'/essays'} />
                     <Route component={PoemMenu} path={'/poetry'} />
