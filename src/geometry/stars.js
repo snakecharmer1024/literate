@@ -105,8 +105,8 @@ export default class Stars extends Component {
       if (this.svg) this.svg.remove();
 
       var i;
-      let width = 640;
-      let height = 640;
+      var width = window.innerWidth;
+      var height = window.innerHeight / 2;
       let rad = width / 250;
       let origin = {
         x: width / 2,

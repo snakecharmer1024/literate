@@ -11,6 +11,9 @@
   height: 200px;
 }
 
+.graph-container {
+}
+
 .App-header {
   background-color: #0;
   height: 250px;
@@ -73,9 +76,9 @@
 
 
 .full-slider-div {
-  padding: 20px;
-  width: 80%;
-  align-content: center;
+  padding: 10px;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 
 .link {

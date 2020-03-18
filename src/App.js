@@ -6,7 +6,7 @@ import GeometryMenu from './menus/geometryMenu.js'
 import MusicMenu from './menus/musicMenu.js'
 import EssayMenu from './menus/essayMenu.js'
 import PoemMenu from './menus/poemMenu.js'
-import { SelectField, TabNavigation, Tab } from 'evergreen-ui';
+import { TabNavigation, Tab } from 'evergreen-ui';
 
 class App extends Component {
   constructor(props) {
@@ -17,10 +17,6 @@ class App extends Component {
     };
   }
   components = [[], <EssayMenu />, <PoemMenu />, <GeometryMenu />, <MusicMenu />];
-
-  handleChange = (event) => {
-    console.log(this.state)
-  };
 
   render() {
     return (

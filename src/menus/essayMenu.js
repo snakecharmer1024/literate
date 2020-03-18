@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import Hacking from '../essays/Hacking.js'
 import SayNo from '../essays/SayNo.js'
 import {Route} from 'react-router-dom'
-import { DropdownMenu, MenuItem } from 'react-bootstrap-dropdown-menu';
-import { SelectField, TextInput, Autocomplete } from 'evergreen-ui';
+import { TextInput, Autocomplete } from 'evergreen-ui';
 
 export default class EssayMenu extends Component {
   constructor(props) {
