@@ -11,14 +11,13 @@ import Desert from '../poems/Desert.js'
 import Secret from '../poems/Secret.js'
 import Liquid from '../poems/Liquid.js'
 import School from '../poems/School.js'
-import {DropdownMenu, MenuItem} from "react-bootstrap-dropdown-menu";
 import {Route} from "react-router";
-import {Autocomplete, TextInput} from 'evergreen-ui'
+import {Menu} from 'evergreen-ui'
 
 export default class PoemMenu extends Component {
   constructor(props) {
     super(props);
-    this.state = {value: 0};
+    this.state = {value: 0, selected: false};
   }
 
   poems = [
@@ -32,27 +31,14 @@ export default class PoemMenu extends Component {
         <p className="App-intro">
           Poetry <br/>
         </p>
-        <Autocomplete
-          title="Poems"
-          onChange={changedItem => this.props.history.push('/poetry/' + changedItem.replace(/\s/g, "-"))}
-          items={this.poems}
-        >
-          {(props) => {
-            const { getInputProps, getRef, inputValue, openMenu } = props
-            return (
-              <TextInput
-                placeholder="poems"
-                value={inputValue}
-                innerRef={getRef}
-                {...getInputProps({
-                  onFocus: () => {
-                    openMenu()
-                  }
-                })}
-              />
-            )
-          }}
-        </Autocomplete>
+        <Menu><Menu.Group>
+          {this.poems.map(x => (
+            <Menu.Item onSelect={() => this.props.history.push('/poetry/' + x.replace(/\s/g, "-"))}>
+              {x}
+            </Menu.Item>
+          ))}
+        </Menu.Group></Menu>
+
         <Route component={Myth} path={"/poetry/mythologizing-the-unconscious"} />
         <Route component={TwoBodies} path={"/poetry/two-bodies"} />
         <Route component={Victory} path={"/poetry/victory"} />

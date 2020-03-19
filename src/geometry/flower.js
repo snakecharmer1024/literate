@@ -27,45 +27,6 @@ function buildRing(rad, center, circles=12, offset=0, color='black') {
   return nodes;
 }
 
-function drawFlower(self, layers=self.state.layers, circles=self.state.circles, phaseShift=self.state.phaseShift) {
-    var width = window.innerWidth;
-    var height = window.innerHeight / 3;
-    let numColors = layers;
-    let colors = [], offset = 0;
-    for (let i = 0; i < numColors; i ++) {
-      colors.push(crystalSpiralColor());
-    }
-    let center = { x: width / 2, y: height / 2};
-    let nodes = [
-      {
-        x: center.x,
-        y: center.y,
-        r: self.state.radius,
-        color: colors[0]
-      }
-    ];
-    for (var i = 0; i < layers; i++) {
-//      offset = i % 2 ? Math.PI / 6 : 0;
-      offset = i % 2 && phaseShift ? Math.PI / circles : 0;
-      nodes = nodes.concat(buildRing(self.state.radius * (2 ** i), center, circles, offset, colors[i]));
-    }
-
-    if (self.svg) self.svg.remove();
-
-    self.svg = select('#graph').append('svg')
-        .attr('width', width)
-        .attr('height', height);
-
-    self.svg.selectAll('nodes')
-        .data(nodes)
-        .enter()
-        .append('circle')
-        .style('stroke', d => d.color)
-        .attr('class', 'flower')
-        .attr('r', d => d.r)
-        .attr('cx', d => d.x)
-        .attr('cy', d => d.y)
-}
 
 
 export default class Flower extends Component {
@@ -81,8 +42,50 @@ export default class Flower extends Component {
   }
 
   componentDidMount() {
-    drawFlower(this,2);
+    this.drawFlower(2);
   }
+
+  drawFlower(layers=this.state.layers, circles=this.state.circles, phaseShift=this.state.phaseShift) {
+    console.log('innerWidth', window.innerWidth)
+    var width = window.screen.width;
+    var height = window.screen.height / 2;
+    let numColors = layers;
+    let colors = [], offset = 0;
+    for (let i = 0; i < numColors; i ++) {
+      colors.push(crystalSpiralColor());
+    }
+    let center = { x: width / 2, y: height / 2};
+    let nodes = [
+      {
+        x: center.x,
+        y: center.y,
+        r: this.state.radius,
+        color: colors[0]
+      }
+    ];
+
+    for (var i = 0; i < layers; i++) {
+      offset = i % 2 && phaseShift ? Math.PI / circles : 0;
+      nodes = nodes.concat(buildRing(this.state.radius * (2 ** i), center, circles, offset, colors[i]));
+    }
+
+    if (this.svg) this.svg.remove();
+
+    this.svg = select('#graph').append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    this.svg.selectAll('nodes')
+        .data(nodes)
+        .enter()
+        .append('circle')
+        .style('stroke', d => d.color)
+        .attr('class', 'flower')
+        .attr('r', d => d.r)
+        .attr('cx', d => d.x)
+        .attr('cy', d => d.y)
+}
+
   render () {
     return (
       <div id="graph-container">
@@ -119,7 +122,7 @@ export default class Flower extends Component {
             max={10}
             onChange={(value) => {
               this.setState({layers: value});
-              drawFlower(this, value);
+              this.drawFlower(value);
             }}
           /></div>
         <div className="slider-div">
@@ -131,7 +134,7 @@ export default class Flower extends Component {
             max={24}
             onChange={(value) => {
               this.setState({circles: value});
-              drawFlower(this, this.state.layers, value);
+              this.drawFlower(this.state.layers, value);
             }}
           /></div>
         <div className="slider-div">
@@ -143,16 +146,15 @@ export default class Flower extends Component {
             max={200}
             onChange={(value) => {
               this.setState({radius: value});
-              drawFlower(this);
+              this.drawFlower();
             }}
           /></div>
           <Checkbox
             label="Phase Shift"
             checked={this.state.phaseShift}
             onChange={ e => {
-              console.log(e.target.checked)
               this.setState({ phaseShift: e.target.checked })
-              drawFlower(this);
+              this.drawFlower();
             }}
           />
 

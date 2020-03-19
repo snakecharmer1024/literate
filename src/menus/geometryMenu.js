@@ -6,7 +6,7 @@ import OctahedronCube from '../geometry/octahedron-cube.js'
 import PValues from '../geometry/pvalues.js';
 import Stars from '../geometry/stars.js';
 import Flower from '../geometry/flower.js';
-import {Autocomplete, TextInput} from 'evergreen-ui'
+import {Menu} from 'evergreen-ui'
 
 
 export default class GeometryMenu extends Component {
@@ -17,24 +17,6 @@ export default class GeometryMenu extends Component {
       children: []
     };
   }
-
-  components = [
-      [],
-      <Tetrahedron />,
-      <OctahedronCube />,
-      <IcosahedronDodecahedron />,
-      <PValues />,
-      <Stars />,
-      <Flower />
-  ];
-
-  handleChange = (event, index, value) => {
-    var state = {
-      value: value,
-      children: this.components[index]
-    };
-    this.setState(state);
-  };
 
   geometries = [
     'Tetrahedron Fractal', 'Octahedron Cube Fractal', 'Icosahedron Dodecahedron Fractal', 'P Values',
@@ -48,28 +30,14 @@ export default class GeometryMenu extends Component {
         <p className="App-intro">
           Geometry
         </p>
+        <Menu><Menu.Group>
+          {this.geometries.map(x => (
+            <Menu.Item onSelect={() => this.props.history.push('/geometry/' + x.replace(/\s/g, "-"))}>
+              {x}
+            </Menu.Item>
+          ))}
+        </Menu.Group></Menu>
 
-        <Autocomplete
-          title="Geometry"
-          onChange={changedItem => this.props.history.push('/geometry/' + changedItem.replace(/\s/g, "-"))}
-          items={this.geometries}
-        >
-          {(props) => {
-            const { getInputProps, getRef, inputValue, openMenu } = props
-            return (
-              <TextInput
-                placeholder="geometry"
-                value={inputValue}
-                innerRef={getRef}
-                {...getInputProps({
-                  onFocus: () => {
-                    openMenu()
-                  }
-                })}
-              />
-            )
-          }}
-        </Autocomplete>
         <Switch>
           <Route component={Tetrahedron} path={"/geometry/tetrahedron-fractal"} />
           <Route component={OctahedronCube} path={"/geometry/octahedron-cube-fractal"} />

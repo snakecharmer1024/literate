@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Hacking from '../essays/Hacking.js'
 import SayNo from '../essays/SayNo.js'
 import {Route} from 'react-router-dom'
-import { TextInput, Autocomplete } from 'evergreen-ui';
+import {Menu} from 'evergreen-ui'
 
 export default class EssayMenu extends Component {
   constructor(props) {
@@ -10,15 +10,7 @@ export default class EssayMenu extends Component {
     this.state = {value: 0};
   }
 
-  components = [[], <Hacking />, <SayNo />];
-
-  handleChange = (event, index, value) => {
-    var state = {
-      value: value,
-      children: this.components[index]
-    };
-    this.setState(state);
-  };
+  essays = ['Hacking Education', 'Saying No'];
 
   render() {
     return (
@@ -26,27 +18,14 @@ export default class EssayMenu extends Component {
         <p className="App-intro">
             Essays <br/>
         </p>
-        <Autocomplete
-          title="Essays"
-          onChange={changedItem => this.props.history.push('/essays/' + changedItem.replace(/\s/g, "-"))}
-          items={['Hacking Education', 'Saying No']}
-        >
-          {(props) => {
-            const { getInputProps, getRef, inputValue, openMenu } = props
-            return (
-              <TextInput
-                placeholder="essays"
-                value={inputValue}
-                innerRef={getRef}
-                {...getInputProps({
-                  onFocus: () => {
-                    openMenu()
-                  }
-                })}
-              />
-            )
-          }}
-        </Autocomplete>
+        <Menu><Menu.Group>
+          {this.essays.map(x => (
+            <Menu.Item onSelect={() => this.props.history.push('/essays/' + x.replace(/\s/g, "-"))}>
+              {x}
+            </Menu.Item>
+          ))}
+        </Menu.Group></Menu>
+
         <Route component={Hacking} path={'/essays/hacking-education'} />
         <Route component={SayNo} path={'/essays/saying-no'} />
       </div>
