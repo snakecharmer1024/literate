@@ -6,6 +6,7 @@ import OctahedronCube from '../geometry/octahedron-cube.js'
 import PValues from '../geometry/pvalues.js';
 import Stars from '../geometry/stars.js';
 import Flower from '../geometry/flower.js';
+import Quaternions from '../geometry/quaternion.js';
 import {Menu} from 'evergreen-ui'
 
 
@@ -20,7 +21,7 @@ export default class GeometryMenu extends Component {
 
   geometries = [
     'Tetrahedron Fractal', 'Octahedron Cube Fractal', 'Icosahedron Dodecahedron Fractal', 'P Values',
-    'Stars', 'Flower'
+    'Stars', 'Flower', 'Quaternions'
   ]
 
   render() {
@@ -32,7 +33,9 @@ export default class GeometryMenu extends Component {
         </p>
         <Menu><Menu.Group>
           {this.geometries.map(x => (
-            <Menu.Item onSelect={() => this.props.history.push('/geometry/' + x.replace(/\s/g, "-"))}>
+            <Menu.Item
+              key={x}
+              onSelect={() => this.props.history.push('/geometry/' + x.replace(/\s/g, "-"))}>
               {x}
             </Menu.Item>
           ))}
@@ -46,6 +49,7 @@ export default class GeometryMenu extends Component {
           <Route component={Stars} path={"/geometry/stars"} />
           <Route component={Stars} path={"/geometry/stars/:vertices/:stepSize"} />
           <Route component={Flower} path={"/geometry/flower"} />
+          <Route component={Quaternions} path={"/geometry/Quaternions"} />
         </Switch>
       </div>
 

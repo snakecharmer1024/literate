@@ -46,7 +46,6 @@ export default class Flower extends Component {
   }
 
   drawFlower(layers=this.state.layers, circles=this.state.circles, phaseShift=this.state.phaseShift) {
-    console.log('innerWidth', window.innerWidth)
     var width = window.screen.width;
     var height = window.screen.height / 2;
     let numColors = layers;

@@ -59,7 +59,6 @@ function changeColor(self) {
 export default class Stars extends Component {
     constructor(props) {
       super(props);
-      console.log('params', props.match.params);
       const params = props.match.params;
       this.state = {
         value: 0,

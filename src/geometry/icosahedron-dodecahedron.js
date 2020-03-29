@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 var THREE = require('three');
 var camera, scene, renderer;
 var material, meshes;
-var light, geometries, num_geos, radius, rotation_speed
+var light, geometries, num_geos, radius, rotation_speed, new_geo
 
 var icosa = init();
 animate();
@@ -21,13 +21,16 @@ function init() {
     geometries = [];
     radius = 100;
     num_geos = 10;
+    new_geo = null;
     rotation_speed = 0.002;
     var i
     for (i = 0; i < num_geos; i++)
     {
       if (i % 2 === 0)
       {
-          geometries.push(new THREE.DodecahedronGeometry(radius));
+          new_geo = new THREE.DodecahedronGeometry(radius);
+          new_geo.lookAt(new THREE.Vector3(0,1,0))
+          geometries.push(new_geo);
       }
       else
       {
